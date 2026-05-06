@@ -5,7 +5,7 @@ import logging
 import os
 import urllib.error
 import urllib.request
-from typing import Optional
+from typing import List, Optional
 
 from multi_agent_research_lab.core.errors import AgentExecutionError
 from multi_agent_research_lab.core.schemas import SourceDocument
@@ -16,7 +16,7 @@ logger = logging.getLogger("search")
 class SearchClient:
     """Provider-agnostic search client interface."""
 
-    def search(self, query: str, max_results: int = 5) -> list[SourceDocument]:
+    def search(self, query: str, max_results: int = 5) -> List[SourceDocument]:
         """Search for documents relevant to a query."""
         raise NotImplementedError
 
@@ -32,7 +32,7 @@ class TavilySearchClient(SearchClient):
             )
         self.base_url = "https://api.tavily.com/search"
 
-    def search(self, query: str, max_results: int = 5) -> list[SourceDocument]:
+    def search(self, query: str, max_results: int = 5) -> List[SourceDocument]:
         """Search Tavily API via urllib.
 
         Args:
@@ -82,7 +82,7 @@ class TavilySearchClient(SearchClient):
 class MockSearchClient(SearchClient):
     """Deterministic mock search client for offline testing."""
 
-    def search(self, query: str, max_results: int = 5) -> list[SourceDocument]:
+    def search(self, query: str, max_results: int = 5) -> List[SourceDocument]:
         """Return deterministic mock search results.
 
         Args:

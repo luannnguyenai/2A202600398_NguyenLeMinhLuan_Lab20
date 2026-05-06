@@ -1,9 +1,11 @@
 """Benchmark report rendering."""
 
+from typing import List
+
 from multi_agent_research_lab.core.schemas import BenchmarkMetrics
 
 
-def render_markdown_report(metrics: list[BenchmarkMetrics]) -> str:
+def render_markdown_report(metrics: List[BenchmarkMetrics]) -> str:
     """Render benchmark metrics to markdown with full analysis.
 
     Args:

@@ -2,7 +2,7 @@
 
 import json
 import logging
-from typing import Optional
+from typing import List, Optional
 
 from multi_agent_research_lab.agents.base import BaseAgent
 from multi_agent_research_lab.core.errors import AgentExecutionError, ValidationError
@@ -93,7 +93,7 @@ class ResearcherAgent(BaseAgent):
                     raise AgentExecutionError(f"ResearcherAgent failed: {e}") from e
                 return state
 
-    def _expand_queries(self, query: str, state: ResearchState) -> list[str]:
+    def _expand_queries(self, query: str, state: ResearchState) -> List[str]:
         """Call LLM to expand main query into sub-queries.
 
         Args:

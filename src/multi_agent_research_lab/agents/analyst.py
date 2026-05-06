@@ -2,7 +2,7 @@
 
 import json
 import logging
-from typing import Optional
+from typing import List, Optional
 
 from pydantic import BaseModel, Field
 
@@ -30,16 +30,16 @@ class KeyClaim(BaseModel):
     """Single key claim with evidence."""
 
     claim: str
-    evidence_index: list[int] = Field(default_factory=list)
+    evidence_index: List[int] = Field(default_factory=list)
     confidence: str = "med"
 
 
 class AnalysisSchema(BaseModel):
     """Structured analysis output."""
 
-    key_claims: list[KeyClaim] = Field(default_factory=list)
-    conflicts: list[str] = Field(default_factory=list)
-    gaps: list[str] = Field(default_factory=list)
+    key_claims: List[KeyClaim] = Field(default_factory=list)
+    conflicts: List[str] = Field(default_factory=list)
+    gaps: List[str] = Field(default_factory=list)
 
 
 class AnalystAgent(BaseAgent):

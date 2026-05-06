@@ -4,7 +4,7 @@ Students should extend this file when adding new agents, outputs, or evaluation 
 """
 
 from time import perf_counter
-from typing import Any, Literal
+from typing import Any, Dict, List, Literal, Optional
 
 from pydantic import BaseModel, Field
 
@@ -16,32 +16,32 @@ class ResearchState(BaseModel):
 
     request: ResearchQuery
     iteration: int = 0
-    route_history: list[str] = Field(default_factory=list)
+    route_history: List[str] = Field(default_factory=list)
 
-    sources: list[SourceDocument] = Field(default_factory=list)
-    research_notes: str | None = None
-    analysis_notes: str | None = None
-    final_answer: str | None = None
+    sources: List[SourceDocument] = Field(default_factory=list)
+    research_notes: Optional[str] = None
+    analysis_notes: Optional[str] = None
+    final_answer: Optional[str] = None
 
-    agent_results: list[AgentResult] = Field(default_factory=list)
-    trace: list[dict[str, Any]] = Field(default_factory=list)
-    errors: list[str] = Field(default_factory=list)
+    agent_results: List[AgentResult] = Field(default_factory=list)
+    trace: List[Dict[str, Any]] = Field(default_factory=list)
+    errors: List[str] = Field(default_factory=list)
 
     # Extended tracking fields
-    token_usage: dict[str, int] = Field(
+    token_usage: Dict[str, int] = Field(
         default_factory=lambda: {"input_tokens": 0, "output_tokens": 0}
     )
     estimated_cost_usd: float = 0.0
-    retries: dict[str, int] = Field(default_factory=dict)
-    start_time: float | None = None
-    end_time: float | None = None
+    retries: Dict[str, int] = Field(default_factory=dict)
+    start_time: Optional[float] = None
+    end_time: Optional[float] = None
     status: Literal["pending", "running", "done", "failed"] = "pending"
 
     def record_route(self, route: str) -> None:
         self.route_history.append(route)
         self.iteration += 1
 
-    def add_trace_event(self, name: str, payload: dict[str, Any]) -> None:
+    def add_trace_event(self, name: str, payload: Dict[str, Any]) -> None:
         self.trace.append({"name": name, "payload": payload})
 
     def add_agent_result(self, result: AgentResult) -> None:
@@ -63,7 +63,7 @@ class ResearchState(BaseModel):
         self.retries[agent] = self.retries.get(agent, 0) + 1
         return self.retries[agent]
 
-    def elapsed_seconds(self) -> float | None:
+    def elapsed_seconds(self) -> Optional[float]:
         """Return elapsed time in seconds, or None if not started."""
         if self.start_time is None:
             return None

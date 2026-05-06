@@ -11,7 +11,7 @@ from contextlib import contextmanager
 from functools import wraps
 from pathlib import Path
 from time import perf_counter
-from typing import Any, Callable, Optional, TypeVar
+from typing import Any, Callable, Dict, Optional, TypeVar
 
 logger = logging.getLogger("trace")
 
@@ -19,14 +19,14 @@ F = TypeVar("F", bound=Callable[..., Any])
 
 
 @contextmanager
-def trace_span(name: str, attributes: dict[str, Any] | None = None) -> Iterator[dict[str, Any]]:
+def trace_span(name: str, attributes: Optional[Dict[str, Any]] = None) -> Iterator[Dict[str, Any]]:
     """Minimal span context used by the skeleton.
 
     TODO(student): Replace or augment with LangSmith/Langfuse provider spans.
     """
 
     started = perf_counter()
-    span: dict[str, Any] = {
+    span: Dict[str, Any] = {
         "name": name,
         "attributes": attributes or {},
         "duration_seconds": None,
@@ -37,7 +37,7 @@ def trace_span(name: str, attributes: dict[str, Any] | None = None) -> Iterator[
         span["duration_seconds"] = perf_counter() - started
 
 
-def record_event(state: Any, name: str, payload: dict[str, Any]) -> None:
+def record_event(state: Any, name: str, payload: Dict[str, Any]) -> None:
     """Record a trace event in the state.
 
     Args:
