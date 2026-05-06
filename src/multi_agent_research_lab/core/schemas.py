@@ -39,3 +39,9 @@ class BenchmarkMetrics(BaseModel):
     estimated_cost_usd: float | None = None
     quality_score: float | None = Field(default=None, ge=0, le=10)
     notes: str = ""
+    input_tokens: int = 0
+    output_tokens: int = 0
+    citation_coverage: float = 0.0
+    failure: bool = False
+    route_history: list[str] = Field(default_factory=list)
+    error_message: str | None = None
